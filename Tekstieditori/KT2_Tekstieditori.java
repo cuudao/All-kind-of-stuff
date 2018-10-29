@@ -160,16 +160,16 @@ public class tekstieditori extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				
 								
-				String sisalto = editorPane.getText();
-				sisalto = sisalto.toLowerCase();
+				String rivi = editorPane.getText();
+				rivi = rivi.toLowerCase();
 				
-				String haettava = "auto";
-				int indeks = sisalto.indexOf(haettava);
+				String haku = " auto";
+				int indeks = rivi.indexOf(haku);
 								
 				editorPane.setSelectionColor(Color.YELLOW);
 				
 				editorPane.setSelectionStart(indeks);
-				editorPane.setSelectionEnd(indeks + haettava.length());
+				editorPane.setSelectionEnd(indeks + haku.length());
 				System.out.println("Indeksi: " + indeks);
 				
 			}
