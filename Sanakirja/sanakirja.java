@@ -1,14 +1,39 @@
 
-
 import java.util.Scanner;
+import java.beans.XMLDecoder;
+import java.beans.XMLEncoder;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.util.HashMap;
 
 public class sanakirja {
-	public static String[] fin = { "kissa", "koira", "hevonen", "auto", "vene" };
-	public static String[] eng = { "cat", "dog", "horse", "car", "boat" };
-	public static HashMap <String, String> sanakirja = new HashMap<String, String>();
+	
+	static void serializeToXML(HashMap<String, String> sanavarasto) throws Exception  {
+		FileOutputStream fos = new FileOutputStream("Sanasto.xml");
+		XMLEncoder encoder = new XMLEncoder(fos);
+		encoder.writeObject(sanavarasto);
+		encoder.close();
+		fos.close();
+	}
 
-	public static void main(String[] args) {
+	static HashMap<String, String> deserializeFromXML() throws Exception {
+		FileInputStream fis = new FileInputStream("Sanasto.xml");
+		XMLDecoder decoder = new XMLDecoder(fis);
+		HashMap<String, String> decodedSanasto = (HashMap<String, String>) decoder.readObject();
+		decoder.close();
+		fis.close();
+		return decodedSanasto;
+	}
+
+public static void main(String[] args) throws Exception {
+	
+	String[] fin = { "kissa", "koira", "hevonen", "auto", "vene" };
+	String[] eng = { "cat", "dog", "horse", "car", "boat" };
+	HashMap <String, String> sanakirja = new HashMap<String, String>();
+
+	
+
+	
 		
 		for (int i = 0; i < fin.length; i++) {
 			sanakirja.put(fin[i], eng[i]);
@@ -19,7 +44,7 @@ public class sanakirja {
 		while (true) {
 			System.out.println("Valitse toiminto.");
 			System.out.println("1. Sanakirja");
-			System.out.println("2. Lis‰‰ sanoja");
+			System.out.println("2. Lis√§√§ sanoja");
 			System.out.println("3. Lopeta");
 			
 			int nro = lukija.nextInt();
@@ -31,14 +56,14 @@ public class sanakirja {
 				while (true) {
 					
 					System.out.println();
-					System.out.print("Mink‰ sanan k‰‰nnˆksen haluat tiet‰‰? (tyhj‰ sanalla alotukseen) \n");
+					System.out.print("Mink√§ sanan k√§√§nn√∂ksen haluat tiet√§√§? (tyhj√§ sanalla alotukseen) ");
 					String sana = lukija.nextLine();
 					
 					if (sanakirja.containsKey(sana)) {
-						System.out.println("Sanan \"" + sana + "\" k‰‰nnˆs on \"" + sanakirja.get(sana) + "\"");
+						System.out.println("Sanan \"" + sana + "\" k√§√§nn√∂s on \"" + sanakirja.get(sana) + "\"");
 						continue;
 					} else if (sanakirja.containsKey(sana) == false && !(sana.isEmpty())){
-						System.out.println("Valittua sanaa ei lˆydy");
+						System.out.println("Valittua sanaa ei l√∂ydy");
 						continue;
 					} else if (sana.isEmpty());{
 						break;
@@ -50,24 +75,28 @@ public class sanakirja {
 				String luku = lukija.nextLine();
 				while (true) {
 					lukija.reset();
-					System.out.println("Sana alkukielell‰? (tyhj‰ sanalla alotukseen): ");
-					String fin = lukija.nextLine();
-					if (fin.length() > 0) {
+					System.out.println("Sana alkukielell√§? (tyhj√§ sanalla alotukseen): ");
+					String suomi = lukija.nextLine();
+					if (suomi.length() > 0) {
 						
 					} else {
 						break;
 					}
-					System.out.println("Sana k‰‰nnettyn‰? (tyhj‰ sanalla alotukseen): ");
-					String eng = lukija.nextLine();
-					sanakirja.put(fin, eng);
+					System.out.println("Sana k√§√§nnettyn√§? (tyhj√§ sanalla alotukseen): ");
+					String enkku = lukija.nextLine();
+					sanakirja.put(suomi, enkku);
 				}
 				
-				System.out.println("Sanakirjan sis‰ltˆ: " + sanakirja + "\n");
+				System.out.println("Sanakirjan sis√§lt√∂: " + sanakirja + "\n");
 				
 				
 			} else if (nro == 3) {
-				System.out.println("Kiitos n‰kemiin!");
+				serializeToXML(sanakirja);
+				System.out.println("Kiitos n√§kemiin! \n");
+				System.out.print("Sanakirjan sanat: " + sanakirja);
 				System.exit(0);
+				
+				
 				
 				
 			}
